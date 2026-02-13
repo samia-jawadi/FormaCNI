@@ -14,8 +14,10 @@ class UserSeeder extends Seeder
         // Méthode sécurisée pour vider la table
         DB::table('users')->delete();
 
-        // Réinitialiser l'auto-incrément pour MySQL
-        DB::statement('ALTER TABLE users AUTO_INCREMENT = 1');
+        // Réinitialiser l'auto-incrément uniquement lorsque le SGBD le supporte (ex: MySQL)
+        if (DB::getDriverName() === 'mysql') {
+            DB::statement('ALTER TABLE users AUTO_INCREMENT = 1');
+        }
 
         // Créer un administrateur
         User::create([
